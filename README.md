@@ -13,8 +13,8 @@
 For example for python script if will be: `python my_super_formatter.py`
 4. Test your formatter in RDM!
 
-**API**
-- Version:
+## API
+### Version:
 
 IN: `<executable> --version`
 
@@ -23,7 +23,7 @@ OUT (plain text):
 ```
 1.0.0
 ```
-- Decode binary data:  
+### Decode binary data:  
 
 IN: `<executable> decode <binary-data>`
 
@@ -36,7 +36,7 @@ OUT (json):
     “format”: “plain_text” // or “json”
 }]
 ```
--  Validate
+### Validate
 
 IN: `<executable> is_valid <binary-data>`
 
@@ -48,7 +48,8 @@ OUT (json):
     “message”: “Invalid CBOR”
 }]
 ```
-- Encode string-representation (will be ignored if ‘decode’ output returns “read-only”: true)
+### Encode string-representation 
+(required only for formatters which return `“read-only”: false` in `decode` method)
 
 IN: `<executable> encode <edited-string-representation>`
 
