@@ -1,6 +1,8 @@
 # RedisDesktopManager Native value formatters
 
-![plugin system](https://cloud.githubusercontent.com/assets/1655867/11134347/91f4b202-89a4-11e5-8446-b34f21ee9152.png)
+![91f4b202-89a4-11e5-8446-b34f21ee9152](https://cloud.githubusercontent.com/assets/1655867/20011127/315cb0c4-a2b3-11e6-8479-ae8a6d030f40.png)
+
+
 **Advantages:**
 - Plugin can be developed by any software engineer (Java/C++/C#/Python/PHP/Node.js etc)
 - Plugin can be easily debugged
