@@ -1,25 +1,27 @@
-# RedisDesktopManager Native value formatters
+# RedisDesktopManager Native Value Formatters
 
 ![91f4b202-89a4-11e5-8446-b34f21ee9152](https://cloud.githubusercontent.com/assets/1655867/20011127/315cb0c4-a2b3-11e6-8479-ae8a6d030f40.png)
-
 
 **Advantages:**
 - Plugin can be developed by any software engineer (Java/C++/C#/Python/PHP/Node.js etc)
 - Plugin can be easily debugged
 
+## How to implement native value formatter
+1. Create directory with meaningful name. Name of the directory will be used as formatter name.
+2. Implement script or executable which meets API described below. 
+3. Add file with name `usage` in directory which contains command required to run your formatter. 
+For example for python script if will be: `python my_super_formatter.py`
+4. Test your formatter in RDM!
+
 **API**
-- Get info:
+- Version:
 
-IN: `<executable> info`
+IN: `<executable> --version`
 
-OUT (json):
+OUT (plain text):
 
 ```
-{
-    “name”: “CBOR formatter”,
-    “version”: “0.0.1”,
-    “supported_values”: [“plain”, “binary”],
-}
+1.0.0
 ```
 - Decode binary data:  
 
