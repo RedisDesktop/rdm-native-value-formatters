@@ -30,11 +30,11 @@ IN: `<executable> decode <binary-data>`
 OUT (json): 
 
 ```
-[{
+{
     “output”: “<decoded data for human-friendly edit>”,
     “read-only”: “false”,
     “format”: “plain_text” // or “json”
-}]
+}
 ```
 ### Validate
 
@@ -43,10 +43,10 @@ IN: `<executable> is_valid <binary-data>`
 OUT (json): 
 
 ```
-[{
+{
     “valid”: “false”,
     “message”: “Invalid CBOR”
-}]
+}
 ```
 ### Encode string-representation 
 (required only for formatters which return `“read-only”: false` in `decode` method)
