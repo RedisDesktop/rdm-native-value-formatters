@@ -37,7 +37,6 @@ OUT (json):
 }
 ```
 ### Validate
-**Required only for formatters which return `“read-only”: false` in `decode` method**
 
 IN: `<executable> is_valid <binary-data>`
 
