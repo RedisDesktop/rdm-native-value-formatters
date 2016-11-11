@@ -9,8 +9,8 @@
 ## How to implement native value formatter
 1. Create directory with meaningful name. Name of the directory will be used as formatter name.
 2. Implement script or executable which meets API described below. 
-3. Add file with name `usage` in directory which contains command required to run your formatter. <br />
-For example for python script if will be: `python my_super_formatter.py`
+3. Add file `usage.json` with usage shell command<br />
+For example for python script if will be: `['python', 'my_super_formatter.py']`
 4. Test your formatter in RDM!
 
 ## API
