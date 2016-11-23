@@ -25,7 +25,7 @@ OUT (plain text):
 ```
 ### Decode binary data:  
 
-IN: `<executable> decode <binary-data>`
+IN: `<executable> decode <binary-data-encoded-with-base64>`
 
 OUT (json): 
 
@@ -38,7 +38,7 @@ OUT (json):
 ```
 ### Validate
 
-IN: `<executable> is_valid <binary-data>`
+IN: `<executable> is_valid <binary-data-encoded-with-base64>`
 
 OUT (json): 
 
