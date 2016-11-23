@@ -55,5 +55,5 @@ IN: `<executable> encode <edited-string-representation>`
 
 OUT (binary): 
 ```
-<binary-data>
+<binary-data-encoded-with-base64>
 ```
