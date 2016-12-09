@@ -51,7 +51,7 @@ OUT (json):
 ### Encode string-representation 
 **Required only for formatters which return `“read-only”: false` in `decode` method**
 
-IN: `<executable> encode <edited-string-representation>`
+IN: `<executable> encode <edited-string-representation-encoded-with-base64>`
 
 OUT (binary): 
 ```
