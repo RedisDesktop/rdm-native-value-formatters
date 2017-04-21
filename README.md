@@ -37,18 +37,6 @@ OUT (json):
     “format”: “plain_text” // or “json”
 }
 ```
-### Validate
-
-IN: `<executable> is_valid <binary-data-encoded-with-base64>`
-
-OUT (json): 
-
-```
-{
-    “valid”: “false”,
-    “message”: “Invalid CBOR”
-}
-```
 ### Encode string-representation 
 **Required only for formatters which return `“read-only”: false` in `decode` method**
 
