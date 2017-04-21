@@ -33,6 +33,7 @@ OUT (json):
 {
     “output”: “<decoded data for human-friendly edit>”,
     “read-only”: “false”,
+    “error”: “”,
     “format”: “plain_text” // or “json”
 }
 ```
@@ -55,5 +56,9 @@ IN: `<executable> encode <edited-string-representation-encoded-with-base64>`
 
 OUT (binary): 
 ```
-<binary-data-encoded-with-base64>
+{
+    “output”: “<binary-data-encoded-with-base64>”,
+    “error”: “”    
+}
+
 ```
