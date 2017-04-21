@@ -32,8 +32,7 @@ OUT (json):
 ```
 {
     “output”: “<decoded data for human-friendly edit>”,
-    “read-only”: “false”,
-    “error”: “”,
+    “read-only”: “false”,    
     “format”: “plain_text” // or “json”
 }
 ```
@@ -42,11 +41,20 @@ OUT (json):
 
 IN: `<executable> encode <edited-string-representation-encoded-with-base64>`
 
-OUT (binary): 
+OUT (json): 
 ```
 {
-    “output”: “<binary-data-encoded-with-base64>”,
-    “error”: “”    
+    “output”: “<binary-data-encoded-with-base64>”,    
 }
 
 ```
+
+### Error handling:
+If formatter cannot decode/encode value error response should be returned:
+OUT (json): 
+```
+{
+    “error”: “Invalid CBOR data”,    
+}
+```
+
