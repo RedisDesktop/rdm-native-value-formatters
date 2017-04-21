@@ -51,6 +51,7 @@ OUT (json):
 
 ### Error handling:
 If formatter cannot decode/encode value error response should be returned:
+
 OUT (json): 
 ```
 {
