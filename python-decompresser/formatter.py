@@ -21,6 +21,19 @@ parser.add_argument('action', help="Available actions: %s" % str(actions))
 parser.add_argument('value', help="Value encoded with base64")
 
 
+def is_gzip(value):
+    return len(value) >= 3 and value[:3] == b'\x1f\x8b\x08'
+
+
+def is_lzma(value):
+    return len(value) >= 26 and value[:26] == \
+                                b'\xfd7zXZ\x00\x00\x04\xe6\xd6\xb4F\x02\x00!\x01\x16\x00\x00\x00t/\xe5\xa3\x01\x00'
+
+
+def is_snappy(value):
+    return snappy.isValidCompressed(value)
+
+
 def main():
     args = parser.parse_args()
 
@@ -44,12 +57,11 @@ def main():
         return process_error("Cannot decode value: %s" % e)
 
     try:
-        if len(decoded_value) >= 3 and decoded_value[:3] == b'\x1f\x8b\x08':
+        if is_gzip(decoded_value):
             unpacked_value = gzip.decompress(decoded_value)
-        elif len(decoded_value) >= 26 and decoded_value[:26] == \
-                b'\xfd7zXZ\x00\x00\x04\xe6\xd6\xb4F\x02\x00!\x01\x16\x00\x00\x00t/\xe5\xa3\x01\x00':
+        elif is_lzma(decoded_value):
             unpacked_value = lzma.decompress(decoded_value)
-        elif snappy.isValidCompressed(decoded_value):
+        elif is_snappy(decoded_value):
             unpacked_value = snappy.uncompress(decoded_value)
         else:
             unpacked_value = lz4.block.decompress(decoded_value)
