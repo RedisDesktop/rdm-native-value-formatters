@@ -15,7 +15,8 @@ ACTION_DECODE = "decode"
 
 actions = (ACTION_DECODE, ACTION_VALIDATE)
 
-parser = argparse.ArgumentParser(description='python decompressing native formatter %s' % __version__)
+parser = argparse.ArgumentParser(
+    description='python native decompressing formatter with gzip, lzma, lz4 and snappy support %s' % __version__)
 parser.add_argument('-v', '--version', action='version', version=__version__)
 parser.add_argument('action', help="Available actions: %s" % str(actions))
 parser.add_argument('value', help="Value encoded with base64")
