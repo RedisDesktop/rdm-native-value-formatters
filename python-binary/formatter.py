@@ -12,7 +12,7 @@ ACTION_DECODE = "decode"
 
 actions = (ACTION_DECODE, ACTION_VALIDATE)
 
-parser = argparse.ArgumentParser(description='python-pickle native formatter %s' % __version__)
+parser = argparse.ArgumentParser(description='python native binary formatter %s' % __version__)
 parser.add_argument('-v', '--version', action='version', version=__version__)
 parser.add_argument('action', help="Available actions: %s" % str(actions))
 parser.add_argument('value', help="Value encoded with base64")
@@ -40,7 +40,10 @@ def main():
     except binascii.Error as e:
         return process_error("Cannot decode value: %s" % e)
 
-    value = bitstring.BitArray(decoded_value).bin
+    try:
+        value = bitstring.BitArray(decoded_value).bin
+    except bitstring.Error as e:
+        return process_error("Cannot format value: %s" % e)
 
     if args.action == ACTION_VALIDATE:
         return print(json.dumps({
