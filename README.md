@@ -13,7 +13,7 @@
 For example for python script it will be: `['python', 'my_super_formatter.py']`
 4. Test your formatter in RDM!
 
-## API
+## Protocol
 ### Version:
 
 IN: `<executable> --version`
