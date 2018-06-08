@@ -29,7 +29,7 @@ if ($action === 'validate') {
 
 if ($action === 'decode') {
     echo json_encode([
-        'output' => $value, //is_gzip($value) ? gzdecode($value) : $value,
+        'output' => is_gzip($value) ? gzdecode($value) : $value,
         'read-only' => true,
         'format' => 'plain_text',
     ]);
