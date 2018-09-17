@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+dirname "$0"
 for i in ./*python*/; do
     cd $i
     if [ -f requirements.txt ]; then
@@ -7,3 +7,5 @@ for i in ./*python*/; do
     fi
     cd ..
 done
+
+export PYTHONPATH=`pwd`

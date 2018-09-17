@@ -1,21 +1,21 @@
-import argparse
-import base64
-import binascii
 import cbor
 import json
 import sys
 
+from python_utils.helpers import get_arg_parser, wait_for_stdin_value
+
 __version__ = "0.0.1"
+DESCRIPTION = "python cbor native formatter"
 
 ACTION_VALIDATE = "validate"
 ACTION_DECODE = "decode"
 
 actions = (ACTION_DECODE, ACTION_VALIDATE)
 
-parser = argparse.ArgumentParser(description='python cbor native formatter %s' % __version__)
-parser.add_argument('-v', '--version', action='version', version=__version__)
-parser.add_argument('action', help="Available actions: %s" % str(actions))
-parser.add_argument('value', help="Value encoded with base64")
+
+parser = get_arg_parser(description=DESCRIPTION,
+                        version=__version__,
+                        actions=actions)
 
 
 def main():
@@ -35,13 +35,12 @@ def main():
             print(msg)
             sys.exit(2)
 
-    try:
-        decoded_value = base64.b64decode(args.value)
-    except binascii.Error as e:
-        return process_error("Cannot decode value: %s" % e)
+    value = wait_for_stdin_value()
+    if not value:
+        return process_error("No value to format.")
 
     try:
-        value = cbor.loads(decoded_value)
+        value = cbor.loads(value)
     except ValueError as e:
         return process_error("Cannot format value: %s" % e)
 
@@ -56,6 +55,7 @@ def main():
             "read-only": True,
             "format": "plain_text",
         }))
+
 
 if __name__ == "__main__":
     main()
