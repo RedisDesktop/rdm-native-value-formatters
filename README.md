@@ -25,9 +25,9 @@ OUT (plain text):
 ```
 ### Decode binary data:  
 
-IN: `<executable> decode <binary-data-encoded-with-base64>`
-
-OUT (json): 
+CMD: `<executable> decode`
+STDIN: `<binary-data-encoded-with-base64>`
+STDOUT (json): 
 
 ```
 {
@@ -39,9 +39,9 @@ OUT (json):
 ### Encode string-representation 
 **Required only for formatters which return `“read-only”: false` in `decode` method**
 
-IN: `<executable> encode <edited-string-representation-encoded-with-base64>`
-
-OUT (json): 
+CMD: `<executable> encode`
+STDIN : `<edited-string-representation-encoded-with-base64>`
+STDOUT (json): 
 ```
 {
     “output”: “<binary-data-encoded-with-base64>”,    
