@@ -1,24 +1,13 @@
-import json
 import gzip
 import lz4
 import lzma
 import snappy
-import sys
 
-from python_utils.helpers import get_arg_parser, wait_for_stdin_value
+from python_utils.base import BaseFormatter
 
-__version__ = "0.0.1"
-DESCRIPTION = "python native decompressing formatter with gzip, lzma, lz4 " \
-              "and snappy support"
-
-ACTION_VALIDATE = "validate"
-ACTION_DECODE = "decode"
-
-actions = (ACTION_DECODE, ACTION_VALIDATE)
-
-parser = get_arg_parser(description=DESCRIPTION,
-                        version=__version__,
-                        actions=actions)
+__version__ = '0.0.1'
+DESCRIPTION = 'Python native decompressing formatter with gzip, lzma, lz4 ' \
+              'and snappy support'
 
 
 def is_gzip(value):
@@ -35,53 +24,25 @@ def is_snappy(value):
     return snappy.isValidCompressed(value)
 
 
-def main():
-    args = parser.parse_args()
+class DecompressingFormatter(BaseFormatter):
+    description = DESCRIPTION
+    version = __version__
 
-    if args.action not in actions:
-        print("Error: Invalid action %s" % args.action)
-        sys.exit(1)
-
-    def process_error(msg):
-        if args.action == ACTION_VALIDATE:
-            return print(json.dumps({
-                "valid": False,
-                "message": msg
-            }))
-        else:
-            print(msg)
-            sys.exit(2)
-
-    value = wait_for_stdin_value()
-    if not value:
-        return process_error("No value to format.")
-
-    try:
-        if is_gzip(value):
-            unpacked_value = gzip.decompress(value)
-        elif is_lzma(value):
-            unpacked_value = lzma.decompress(value)
-        elif is_snappy(value):
-            unpacked_value = snappy.uncompress(value)
-        else:
-            unpacked_value = lz4.block.decompress(value)
-    except OSError as e:
-        return process_error("Cannot decompress value: %s" % e)
-
-    unpacked_value = unpacked_value.decode()
-
-    if args.action == ACTION_VALIDATE:
-        return print(json.dumps({
-            "valid": True,
-            "message": ""
-        }))
-    else:
-        return print(json.dumps({
-            "output": repr(unpacked_value),
-            "read-only": True,
-            "format": "plain_text",
-        }))
+    def format(self, value):
+        try:
+            if is_gzip(value):
+                output = gzip.decompress(value)
+            elif is_lzma(value):
+                output = lzma.decompress(value)
+            elif is_snappy(value):
+                output = snappy.uncompress(value)
+            else:
+                output = lz4.block.decompress(value)
+            return output
+        except OSError as e:
+            return self.process_error(
+                message='Cannot decompress value: {}'.format(e))
 
 
 if __name__ == "__main__":
-    main()
+    DecompressingFormatter().main()

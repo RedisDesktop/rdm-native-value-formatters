@@ -1,4 +1,5 @@
 import argparse
+import base64
 import sys
 import time
 
@@ -18,9 +19,9 @@ def get_arg_parser(description, version, actions):
 def wait_for_stdin_value(timeout=TIMEOUT):
     stop = time.time() + timeout
     while time.time() < stop:
-        if not sys.stdin.isatty():
-            sys.stdin.seek(0)
+        try:
             value = sys.stdin.read()
-            return value
-        time.sleep(0.1)
+            return base64.b64decode(value)
+        except Exception:
+            time.sleep(0.1)
     return None
