@@ -1,4 +1,10 @@
+import os
+import sys
+
 import msgpack
+
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from python_utils.base import BaseFormatter
 
@@ -14,8 +20,7 @@ class MsgpackFormatter(BaseFormatter):
         try:
             return msgpack.unpackb(value, encoding='utf-8')
         except msgpack.UnpackValueError as e:
-            return self.process_error(
-                message='Cannot unpack value: {}'.format(e))
+            return self.process_error('Cannot unpack value: {}'.format(e))
 
 
 if __name__ == "__main__":

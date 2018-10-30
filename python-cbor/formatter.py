@@ -1,4 +1,10 @@
+import os
+import sys
+
 import cbor
+
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from python_utils.base import BaseFormatter
 
@@ -14,8 +20,7 @@ class CBORFormatter(BaseFormatter):
         try:
             return cbor.loads(value)
         except ValueError as e:
-            return self.process_error(
-                message='Cannot format value: {}'.format(e))
+            return self.process_error('Cannot format value: {}'.format(e))
 
 
 if __name__ == "__main__":

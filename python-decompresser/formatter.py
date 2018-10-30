@@ -1,7 +1,13 @@
+import os
+import sys
+
 import gzip
-import lz4
+import lz4.block
 import lzma
 import snappy
+
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from python_utils.base import BaseFormatter
 
@@ -40,8 +46,7 @@ class DecompressingFormatter(BaseFormatter):
                 output = lz4.block.decompress(value)
             return output
         except OSError as e:
-            return self.process_error(
-                message='Cannot decompress value: {}'.format(e))
+            return self.process_error('Cannot decompress value: {}'.format(e))
 
 
 if __name__ == "__main__":
