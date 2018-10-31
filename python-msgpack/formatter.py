@@ -18,7 +18,7 @@ class MsgpackFormatter(BaseFormatter):
 
     def format(self, value):
         try:
-            return msgpack.unpackb(value, encoding='utf-8')
+            return msgpack.unpackb(value, raw=False)
         except msgpack.UnpackValueError as e:
             return self.process_error('Cannot unpack value: {}'.format(e))
 
