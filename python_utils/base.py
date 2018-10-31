@@ -70,11 +70,11 @@ class BaseFormatter(ABC):
                 'format': 'plain_text',
             }))
 
-    def main(self):
+    def main(self, *args):
         parser = get_arg_parser(description=self.description,
                                 version=self.version,
                                 actions=self.actions)
-        args = parser.parse_args()
+        args = parser.parse_args(args)
         self.validate_action(args.action)
 
         try:
