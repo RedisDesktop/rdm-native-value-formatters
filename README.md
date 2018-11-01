@@ -14,15 +14,16 @@ For example for python script it will be: `['python', 'my_super_formatter.py']`
 4. Test your formatter in RDM!
 
 ## Protocol
-### Version:
+### Formatter info:
 
-IN: `<executable> --version`
-
-OUT (plain text):
+CMD: `<executable> info`
+STDOUT (json):
 
 ```
-1.0.0
-Formatter description
+{
+    "version": "1.0.0",
+    "description": "Formatter description"
+}
 ```
 ### Decode binary data:  
 
