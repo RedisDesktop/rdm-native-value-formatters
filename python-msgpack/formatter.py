@@ -1,60 +1,27 @@
-import json
-import msgpack
+import os
 import sys
 
-from python_utils.helpers import get_arg_parser, wait_for_stdin_value
+import msgpack
 
-__version__ = "0.0.1"
-DESCRIPTION = "python msgpack native formatter"
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-ACTION_VALIDATE = "validate"
-ACTION_DECODE = "decode"
+from python_utils.base import BaseFormatter
 
-actions = (ACTION_DECODE, ACTION_VALIDATE)
-
-parser = get_arg_parser(description=DESCRIPTION,
-                        version=__version__,
-                        actions=actions)
+__version__ = '0.0.1'
+DESCRIPTION = 'Python msgpack native formatter'
 
 
-def main():
-    args = parser.parse_args()
+class MsgpackFormatter(BaseFormatter):
+    description = DESCRIPTION
+    version = __version__
 
-    if args.action not in actions:
-        print("Error: Invalid action %s" % args.action)
-        sys.exit(1)
-
-    def process_error(msg):
-        if args.action == ACTION_VALIDATE:
-            return print(json.dumps({
-                "valid": False,
-                "message": msg
-            }))
-        else:
-            print(msg)
-            sys.exit(2)
-
-    value = wait_for_stdin_value()
-    if not value:
-        return process_error("No value to format.")
-
-    try:
-        unpacked_value = msgpack.unpackb(value, encoding='utf-8')
-    except msgpack.UnpackValueError as e:
-        return process_error("Cannot unpack value: %s" % e)
-
-    if args.action == ACTION_VALIDATE:
-        return print(json.dumps({
-            "valid": True,
-            "message": ""
-        }))
-    else:
-        return print(json.dumps({
-            "output": repr(unpacked_value),
-            "read-only": True,
-            "format": "plain_text",
-        }))
+    def format(self, value):
+        try:
+            return msgpack.unpackb(value, raw=False)
+        except msgpack.UnpackValueError as e:
+            return self.process_error('Cannot unpack value: {}'.format(e))
 
 
 if __name__ == "__main__":
-    main()
+    MsgpackFormatter().main()
