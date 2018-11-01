@@ -10,11 +10,12 @@ __version__ = '0.0.1'
 DESCRIPTION = 'Python generic formatter'
 
 ACTION_DECODE = 'decode'
+ACTION_INFO = 'info'
 ACTION_VALIDATE = 'validate'
 
 
 class BaseFormatter(ABC):
-    actions = (ACTION_DECODE, ACTION_VALIDATE)
+    actions = (ACTION_DECODE, ACTION_INFO, ACTION_VALIDATE)
 
     def __init__(self, debug=True):
         self.logger = logging.getLogger()
@@ -60,7 +61,13 @@ class BaseFormatter(ABC):
             'error': ''
         }))
 
-    def return_output(self, output):
+    def return_info(self):
+        return print(json.dumps({
+            'version': self.version,
+            'description': self.description
+        }))
+
+    def return_formatted_output(self, output):
         if self.action == ACTION_VALIDATE:
             self.return_valid()
         else:
@@ -77,6 +84,9 @@ class BaseFormatter(ABC):
         args = parser.parse_args(args)
         self.validate_action(args.action)
 
+        if self.action == ACTION_INFO:
+            self.return_info()
+
         try:
             value = wait_for_stdin_value()
         except binascii.Error as e:
@@ -90,4 +100,4 @@ class BaseFormatter(ABC):
         except Exception as e:
             return self.process_error('Cannot format value: {}'.format(e))
 
-        self.return_output(output)
+        self.return_formatted_output(output)

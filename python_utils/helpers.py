@@ -8,18 +8,8 @@ TIMEOUT = 5
 
 
 def get_arg_parser(description, version, actions):
-
-    class VersionAction(argparse.Action):
-        def __init__(self, nargs=0, **kwargs):
-            super().__init__(nargs=nargs, **kwargs)
-
-        def __call__(self, parser, namespace, values, option_string=None):
-            print('{}\n{}'.format(version, description))
-            parser.exit()
-
     parser = argparse.ArgumentParser(
         description='{} {}'.format(description, version))
-    parser.add_argument('-v', '--version', action=VersionAction)
     parser.add_argument('action', help='Available actions: {}'.format(actions))
     return parser
 
