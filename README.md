@@ -22,6 +22,7 @@ OUT (plain text):
 
 ```
 1.0.0
+Formatter description
 ```
 ### Decode binary data:  
 
