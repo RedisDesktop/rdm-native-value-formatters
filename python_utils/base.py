@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 import binascii
 import json
 import logging
@@ -25,12 +25,13 @@ class BaseFormatter(ABC):
         else:
             self.logger.setLevel(logging.INFO)
 
-
-    @abstractproperty
+    @property
+    @abstractmethod
     def description(self):
         return DESCRIPTION
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def version(self):
         return __version__
 
@@ -40,7 +41,7 @@ class BaseFormatter(ABC):
 
     def process_error(self, message):
         if self.action == ACTION_VALIDATE:
-            return print(json.dumps({
+            print(json.dumps({
                 'valid': False,
                 'error': message
             }))
@@ -55,23 +56,23 @@ class BaseFormatter(ABC):
         self.action = action
 
     @staticmethod
-    def return_valid():
-        return print(json.dumps({
+    def valid_output():
+        print(json.dumps({
             'valid': True,
             'error': ''
         }))
 
-    def return_info(self):
-        return print(json.dumps({
+    def info_output(self):
+        print(json.dumps({
             'version': self.version,
             'description': self.description
         }))
 
-    def return_formatted_output(self, output):
+    def formatted_output(self, output):
         if self.action == ACTION_VALIDATE:
-            self.return_valid()
+            self.valid_output()
         else:
-            return print(json.dumps({
+            print(json.dumps({
                 'output': repr(output),
                 'read-only': True,
                 'format': 'plain_text',
@@ -81,11 +82,15 @@ class BaseFormatter(ABC):
         parser = get_arg_parser(description=self.description,
                                 version=self.version,
                                 actions=self.actions)
-        args = parser.parse_args(args)
+        if args:
+            args = parser.parse_args(args)
+        else:
+            args = parser.parse_args()
+
         self.validate_action(args.action)
 
         if self.action == ACTION_INFO:
-            self.return_info()
+            return self.info_output()
 
         try:
             value = wait_for_stdin_value()
@@ -100,4 +105,4 @@ class BaseFormatter(ABC):
         except Exception as e:
             return self.process_error('Cannot format value: {}'.format(e))
 
-        self.return_formatted_output(output)
+        return self.formatted_output(output)

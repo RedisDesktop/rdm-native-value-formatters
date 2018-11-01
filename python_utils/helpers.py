@@ -10,7 +10,8 @@ TIMEOUT = 5
 def get_arg_parser(description, version, actions):
     parser = argparse.ArgumentParser(
         description='{} {}'.format(description, version))
-    parser.add_argument('action', help='Available actions: {}'.format(actions))
+    parser.add_argument('action', choices=actions,
+                        help='Available actions: {}'.format(actions))
     return parser
 
 
