@@ -4,7 +4,11 @@ import sys
 import gzip
 import lz4.block
 import lzma
-import snappy
+try:
+    import snappy
+    SNAPPY_SUPPORT = True
+except ImportError:
+    SNAPPY_SUPPORT = False
 
 sys.path.append(
     os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
@@ -41,7 +45,12 @@ class DecompressingFormatter(BaseFormatter):
             elif is_lzma(value):
                 output = lzma.decompress(value)
             elif is_snappy(value):
-                output = snappy.uncompress(value)
+                if SNAPPY_SUPPORT:
+                    output = snappy.uncompress(value)
+                else:
+                    return self.process_error(
+                        'Cannot decompress value: '
+                        'Snappy is not available on this system.')
             else:
                 output = lz4.block.decompress(value)
             return output
