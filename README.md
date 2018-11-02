@@ -25,6 +25,20 @@ STDOUT (json):
     "description": "Formatter description"
 }
 ```
+### Validate: 
+
+CMD: `<executable> validate`
+STDIN: `<binary-data-encoded-with-base64>`
+STDOUT (json): 
+
+```
+{    
+    “valid”: “false”,    
+    “error”: “input is not gziped data” // if valid is false
+}
+```
+
+
 ### Decode binary data:  
 
 CMD: `<executable> decode`
