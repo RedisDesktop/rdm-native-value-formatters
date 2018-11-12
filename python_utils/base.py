@@ -68,15 +68,24 @@ class BaseFormatter(ABC):
             'description': self.description
         }))
 
-    def formatted_output(self, output):
-        if self.action == ACTION_VALIDATE:
-            self.valid_output()
-        else:
-            print(json.dumps({
-                'output': repr(output),
+    @staticmethod
+    def formatted_output(output):
+        def get_output_dict(output):
+            return {
+                'output': output,
                 'read-only': True,
                 'format': 'plain_text',
-            }))
+            }
+
+        if hasattr(output, 'decode'):
+            output = output.decode()
+
+        try:
+            json_output = json.dumps(get_output_dict(output))
+        except (TypeError, OverflowError):
+            json_output = json.dumps(get_output_dict(repr(output)))
+
+        print(json_output)
 
     def main(self, *args):
         parser = get_arg_parser(description=self.description,
@@ -104,5 +113,8 @@ class BaseFormatter(ABC):
             output = self.format(value=value)
         except Exception as e:
             return self.process_error('Cannot format value: {}'.format(e))
+
+        if self.action == ACTION_VALIDATE:
+            return self.valid_output()
 
         return self.formatted_output(output)

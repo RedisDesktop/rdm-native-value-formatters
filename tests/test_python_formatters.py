@@ -52,7 +52,10 @@ class TestBase(unittest.TestCase):
         base64_value = base64.b64encode(value).decode()
         json_output = self.get_formatted_output(base64_value)
         output = json.loads(json_output)
-        formatted_value = eval(output.get('output', ''))
+        formatted_value = output.get('output', '')
+
+        if hasattr(self.expected_value, 'decode'):
+            self.expected_value = self.expected_value.decode()
 
         self.assertEqual(formatted_value, self.expected_value,
                          'Unexpected output: {}'.format(formatted_value))
