@@ -1,26 +1,36 @@
 <?php
-
-$VERSION = "0.0.1";
+$VERSION = "0.0.2";
 
 if (count($argv) < 2) {
-  echo "Invalid arguments";
-  exit(-1);
+    echo json_encode(array('error' => "Invalid arguments"));
+    exit(1);
 }
 
-if ($argv[1] == "--version") {
-  echo $VERSION;
-  exit(0);
-}
+switch ($argv[1]) {
+case 'info':
+    $data = array(
+        'version' => $VERSION,
+        'description' => 'PHP serialize formatter'
+    );
+    break;
 
-if ($argv[1] == "decode") {
-    echo json_encode(array(
+case 'validate':
+    $data = array(
+        "valid" => @unserialize(base64_decode($argv[2])) !== false,
+        "error" => error_get_last(),
+    );
+    break;
+
+case 'decode':
+    $data = array(
         "output" => print_r(unserialize(base64_decode($argv[2])), true),
         "read-only" => true,
         "format" => "plain_text",
-    ));
-} elseif ($argv[1] == "validate") {
-    echo json_encode(array(
-        "valid" => unserialize(base64_decode($argv[2])) !== false,
-        "message" => "",
-    ));
+    );
+    break;
+
+default:
+    $data = array();
 }
+
+echo json_encode($data);
